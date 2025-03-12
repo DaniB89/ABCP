@@ -1,0 +1,23 @@
+<!-- abcpHome/templates/abcpHome/potb.html -->
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PotB Page</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to the PotB Page</h1>
+        <p>This is the PotB page content.</p>
+    </div>
+    <div class="tech-dots">
+        {% for tech_dot in tech_dots %}
+            <a href="{% url 'tech_dot_detail' tech_dot.pk %}" class="tech-dot">{{ tech_dot.name }}</a>
+        {% endfor %}
+    </div>
+</body>
+</html>

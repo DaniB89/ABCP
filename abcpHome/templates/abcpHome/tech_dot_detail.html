@@ -1,0 +1,18 @@
+<!-- abcpHome/templates/abcpHome/tech_dot_detail.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ tech_dot.name }}</title>
+</head>
+<body>
+    <h1>{{ tech_dot.name }}</h1>
+    <p>{{ tech_dot.description }}</p>
+    {% if tech_dot.link %}
+        <p><a href="{{ tech_dot.link }}">More Information</a></p>
+    {% endif %}
+    <p><a href="{% url 'potb' %}">Back</a></p>
+</body>
+</html>

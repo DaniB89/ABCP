@@ -1,0 +1,48 @@
+<!-- abcpHome/templates/abcpHome/login_register.html -->
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login or Register</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+    <script src="{% static 'js/scripts.js' %}"></script>
+</head>
+<body>
+    <div class="container">
+        <h2>Login or Register</h2>
+        <div class="radio-group">
+            <label>
+                <input type="radio" id="login-radio" name="form-type" value="login" onclick="toggleForms()" checked> Login
+            </label>
+            <label>
+                <input type="radio" id="register-radio" name="form-type" value="register" onclick="toggleForms()"> Register
+            </label>
+        </div>
+        <form method="post" action="{% url 'login_register' %}">
+            {% csrf_token %}
+            <div id="login-form">
+                <fieldset>
+                    <legend>Login</legend>
+                    {{ form.login_username.label_tag }} {{ form.login_username }}
+                    {{ form.login_password.label_tag }} {{ form.login_password }}
+                </fieldset>
+            </div>
+
+            <div id="register-form" style="display: none;">
+                <fieldset>
+                    <legend>Register</legend>
+                    {{ form.register_email.label_tag }} {{ form.register_email }}
+                    {{ form.register_username.label_tag }} {{ form.register_username }}
+                    {{ form.register_password1.label_tag }} {{ form.register_password1 }}
+                    {{ form.register_password2.label_tag }} {{ form.register_password2 }}
+                </fieldset>
+            </div>
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</body>
+</html>
