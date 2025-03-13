@@ -1,20 +1,98 @@
 <!-- abcpHome/templates/abcpHome/potb.html -->
+{% extends 'base.html' %}
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PotB Page</title>
+    <title>{{ content.title }}</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #000;
+            color: #fff;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .centered-text {
+            position: relative;
+            z-index: 1;
+            font-size: 1.5em;
+            padding: 20px;
+            text-align: center;
+        }
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+    </style>
     <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
 </head>
 <body>
     <div class="container">
-        <h1>Within this book, things unknown and unheard from distant corners of the earth may be revealed. May YOU with ears to hear, hear deeply through to truth; may YOU with eyes to see, see clearly what you seek; and if you shall be called to speak, may YOUR words be gracious, seasoned with salt, so that you may know how you ought to answer each person because the soothing tongue is a tree of life, but a perverse tongue crushes the spirit. Lead with love as profound and purposeful as the eternal word of Yahweh, our Sovereign Lord --- whose divine word is, was, and always will be. Amen, Ase' </h1>
-        <p>Within this book, things unknown and unheard from distant corners of the earth may be revealed. May YOU with ears to hear, hear deeply through to truth; may YOU with eyes to see, see clearly what you seek; and if you shall be called to speak, may YOUR words be gracious, seasoned with salt, so that you may know how you ought to answer each person because the soothing tongue is a tree of life, but a perverse tongue crushes the spirit. Lead with love as profound and purposeful as the eternal word of Yahweh, our Sovereign Lord --- whose divine word is, was, and always will be. Amen, Ase' </p>
+        <div class="centered-text">{{ content.content|safe }}</div>
+        <canvas id="techDotsCanvas"></canvas>
     </div>
-    <div class="tech-dots">
-        {% for tech_dot in tech_dots %}
-            <a href="{% url 'tech_dot_detail' tech_dot.pk %}" class="tech-dot">{{ tech_dot.name }}</a>
-        {% endfor %}
-    </div>
+    <script>
+        const canvas = document.getElementById('techDotsCanvas');
+        const ctx = canvas.getContext('2d');
+        const textElement = document.querySelector('.centered-text');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        function getRandomInt(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        function drawDots() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const numDots = 100;
+            const textRect = textElement.getBoundingClientRect();
+            const centerX = textRect.left + textRect.width / 2;
+            const centerY = textRect.top + textRect.height / 2;
+
+            for (let i = 0; i < numDots; i++) {
+                const angle = Math.random() * 2 * Math.PI;
+                const radius = getRandomInt(50, 200);
+                const x = centerX + radius * Math.cos(angle);
+                const y = centerY + radius * Math.sin(angle);
+                const size = getRandomInt(2, 5);
+
+                ctx.beginPath();
+                ctx.arc(x, y, size, 0, 2 * Math.PI);
+                ctx.fillStyle = '#0f0';
+                ctx.fill();
+            }
+        }
+
+        window.addEventListener('resize', () => {
+            resizeCanvas();
+            drawDots();
+        });
+
+        resizeCanvas();
+        drawDots();
+    </script>
+</body>
+</html>

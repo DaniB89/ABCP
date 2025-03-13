@@ -1,0 +1,24 @@
+<!-- abcpHome/templates/abcpHome/signup.html -->
+
+{% extends "base.html" %}
+
+{% block extra_styles %}
+<style>
+    body {
+        background: {{ gradient }};
+        color: white;
+    }
+    h1, h2 {
+        color: white;
+    }
+</style>
+{% endblock extra_styles %}
+
+{% block content %}
+    <h2>Sign Up</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Sign Up</button>
+        </form>
+{% endblock %}

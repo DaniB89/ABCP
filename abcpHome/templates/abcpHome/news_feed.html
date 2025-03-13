@@ -1,0 +1,185 @@
+<!-- abcpHome/templates/abcpHome/news_feed.html -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}News Feed - My Site{% endblock title %}
+
+{% block extra_styles %}
+<style>
+    body {
+        background: {{ gradient }};
+        color: #333; /* Ensure text color is dark grey for better contrast */
+    }
+    h1, h2 {
+        color: #333; /* Ensure heading color is dark grey for better contrast */
+    }
+    .container {
+        width: 80%;
+        max-width: 800px;
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin: 20px auto;
+        color: #333; /* Ensure text inside container is dark grey */
+    }
+    .news-item {
+        background-color: white;
+        color: #333; /* Ensure news item text color is dark grey for better contrast */
+        border: 1px solid lightgrey;
+        padding: 20px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    }
+    .news-item h2 {
+        color: #333; /* Ensure news item heading color is dark grey for better contrast */
+    }
+    .news-item p {
+        color: #333; /* Ensure news item paragraph color is dark grey for better contrast */
+    }
+    .news-feed-container {
+        width: 80%;
+        max-width: 800px;
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin: 20px auto;
+        color: #333; /* Ensure text inside container is dark grey */
+    }
+    .post {
+        background-color: white;
+        color: #333; /* Ensure post text color is dark grey for better contrast */
+        border: 1px solid lightgrey;
+        padding: 20px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    }
+    .post-header h3 {
+        color: #333; /* Ensure post heading color is dark grey for better contrast */
+    }
+    .post-content p {
+        color: #333; /* Ensure post content color is dark grey for better contrast */
+    }
+    .comment {
+        background-color: #f9f9f9;
+        padding: 10px;
+        border-radius: 5px;
+        margin-top: 10px;
+    }
+    .comment p {
+        color: #333; /* Ensure comment text color is dark grey for better contrast */
+    }
+    .new-post-form {
+        margin-bottom: 20px;
+    }
+    .new-post-form textarea {
+        width: 100%;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid lightgrey;
+        margin-bottom: 10px;
+    }
+    .new-post-form button {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        background-color: #333;
+        color: white;
+        cursor: pointer;
+    }
+</style>
+{% endblock extra_styles %}
+
+{% block content %}
+<div class="news-feed-container">
+    <h1>Prayer News Feed</h1>
+
+    <!-- My Prayers Section -->
+    <div class="my-prayers-section">
+        <h2>My Prayers</h2>
+        <form class="new-post-form" method="post" action="{% url 'add_my_prayer' %}">
+            {% csrf_token %}
+            <textarea name="content" placeholder="Write a new prayer..."></textarea>
+            <button type="submit">Post</button>
+        </form>
+        <div class="posts-container">
+            {% for post in my_prayers %}
+            <div class="post">
+                <div class="post-header">
+                    <h3>{{ post.title }}</h3>
+                    <p>Posted by {{ post.user.username }} on {{ post.created_at }}</p>
+                </div>
+                <div class="post-content">
+                    <p>{{ post.content }}</p>
+                </div>
+                <div class="post-actions">
+                    <button class="flower-btn" data-post-id="{{ post.id }}">🌸 {{ post.flower_count }}</button>
+                    <button class="comment-btn" data-post-id="{{ post.id }}">💬 Comment</button>
+                    <button class="share-btn" data-post-id="{{ post.id }}">🔄 Share</button>
+                    <button class="save-btn" data-post-id="{{ post.id }}">💾 Save</button>
+                </div>
+                <div class="comments-container" id="comments-{{ post.id }}">
+                    {% for comment in post.comments.all %}
+                    <div class="comment">
+                        <p><strong>{{ comment.user.username }}:</strong> {{ comment.text }}</p>
+                    </div>
+                    {% endfor %}
+                    <form class="comment-form" data-post-id="{{ post.id }}">
+                        <textarea name="comment" placeholder="Write a comment..."></textarea>
+                        <button type="submit">Amen, Ase'</button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Prayer Intercession Section -->
+    <div class="prayer-intercession-section">
+        <h2>Prayer Intercession</h2>
+        <form class="new-post-form" method="post" action="{% url 'add_prayer_intercession' %}">
+            {% csrf_token %}
+            <textarea name="content" placeholder="Write a new prayer intercession..."></textarea>
+            <button type="submit">Post</button>
+        </form>
+        <div class="posts-container">
+            {% for post in prayer_intercessions %}
+            <div class="post">
+                <div class="post-header">
+                    <h3>{{ post.title }}</h3>
+                    <p>Posted by {{ post.user.username }} on {{ post.created_at }}</p>
+                </div>
+                <div class="post-content">
+                    <p>{{ post.content }}</p>
+                </div>
+                <div class="post-actions">
+                    <button class="flower-btn" data-post-id="{{ post.id }}">🌸 {{ post.flower_count }}</button>
+                    <button class="comment-btn" data-post-id="{{ post.id }}">💬 Comment</button>
+                    <button class="share-btn" data-post-id="{{ post.id }}">🔄 Share</button>
+                    <button class="save-btn" data-post-id="{{ post.id }}">💾 Save</button>
+                </div>
+                <div class="comments-container" id="comments-{{ post.id }}">
+                    {% for comment in post.comments.all %}
+                    <div class="comment">
+                        <p><strong>{{ comment.user.username }}:</strong> {{ comment.text }}</p>
+                    </div>
+                    {% endfor %}
+                    <form class="comment-form" data-post-id="{{ post.id }}">
+                        <textarea name="comment" placeholder="Write a comment..."></textarea>
+                        <button type="submit">Amen, Ase'</button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block extra_scripts %}
+<script src="{% static 'js/scripts.js' %}"></script>
+{% endblock extra_scripts %}
+

@@ -1,48 +1,154 @@
 <!-- abcpHome/templates/abcpHome/login_register.html -->
+{% extends "base.html" %}
 
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login or Register</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
-    <script src="{% static 'js/scripts.js' %}"></script>
-</head>
-<body>
-    <div class="container">
-        <h2>Login or Register</h2>
-        <div class="radio-group">
-            <label>
-                <input type="radio" id="login-radio" name="form-type" value="login" onclick="toggleForms()" checked> Login
-            </label>
-            <label>
-                <input type="radio" id="register-radio" name="form-type" value="register" onclick="toggleForms()"> Register
-            </label>
-        </div>
-        <form method="post" action="{% url 'login_register' %}">
-            {% csrf_token %}
-            <div id="login-form">
-                <fieldset>
-                    <legend>Login</legend>
-                    {{ form.login_username.label_tag }} {{ form.login_username }}
-                    {{ form.login_password.label_tag }} {{ form.login_password }}
-                </fieldset>
-            </div>
+{% block title %}Login or Register{% endblock %}
 
-            <div id="register-form" style="display: none;">
-                <fieldset>
-                    <legend>Register</legend>
-                    {{ form.register_email.label_tag }} {{ form.register_email }}
-                    {{ form.register_username.label_tag }} {{ form.register_username }}
-                    {{ form.register_password1.label_tag }} {{ form.register_password1 }}
-                    {{ form.register_password2.label_tag }} {{ form.register_password2 }}
-                </fieldset>
-            </div>
+{% block extra_styles %}
+<style>
+    body {
+        background: {{ gradient }};
+        color: #333; /* Changed text color to dark grey for better contrast */
+    }
+    h1, h2 {
+        color: #333; /* Changed heading color to dark grey for better contrast */
+    }
+    .container {
+        width: 80%;
+        max-width: 600px;
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin: 20px auto;
+        color: #333; /* Ensure text inside container is dark grey */
+    }
+    .radio-group {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+    .radio-group label {
+        margin: 0 10px;
+        font-weight: bold;
+    }
+    fieldset {
+        border: none;
+        padding: 0;
+        margin: 0;
+    }
+    legend {
+        font-size: 1.2em;
+        margin-bottom: 10px;
+    }
+    input[type="text"], input[type="password"], input[type="email"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+    button[type="submit"] {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        width: 100%;
+    }
+    button[type="submit"]:hover {
+        background-color: #0056b3;
+    }
+    .profile-container {
+        width: 80%;
+        max-width: 800px;
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin: 20px auto;
+        color: #333; /* Ensure text inside profile container is dark grey */
+    }
+    .card {
+        background-color: white;
+        color: #333; /* Changed card text color to dark grey for better contrast */
+        border: 1px solid lightgrey;
+        padding: 20px;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .card h2 {
+        color: #333; /* Changed card heading color to dark grey for better contrast */
+    }
+    .button {
+        background-color: blue;
+        color: white;
+        border: none;
+        padding: 10px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+    .button:hover {
+        background-color: darkblue;
+    }
+</style>
+{% endblock extra_styles %}
 
-            <button type="submit">Submit</button>
-        </form>
+{% block content %}
+<div class="container">
+    <h2>Login or Register</h2>
+    {% if messages %}
+        <ul>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <div class="radio-group">
+        <label>
+            <input type="radio" id="login-radio" name="form-type" value="login" onclick="toggleForms()" checked> Login
+        </label>
+        <label>
+            <input type="radio" id="register-radio" name="form-type" value="register" onclick="toggleForms()"> Register
+        </label>
     </div>
-</body>
-</html>
+    <form method="post" action="{% url 'login_register' %}">
+        {% csrf_token %}
+        <div id="login-form">
+            <fieldset>
+                <legend>Login</legend>
+                {{ form.login_username.label_tag }} {{ form.login_username }}
+                {{ form.login_password.label_tag }} {{ form.login_password }}
+            </fieldset>
+        </div>
+
+        <div id="register-form" style="display: none;">
+            <fieldset>
+                <legend>Register</legend>
+                {{ form.register_email.label_tag }} {{ form.register_email }}
+                {{ form.register_username.label_tag }} {{ form.register_username }}
+                {{ form.register_password1.label_tag }} {{ form.register_password1 }}
+                {{ form.register_password2.label_tag }} {{ form.register_password2 }}
+            </fieldset>
+        </div>
+
+        <button type="submit">Submit</button>
+    </form>
+</div>
+
+<script>
+    function toggleForms() {
+        var loginForm = document.getElementById('login-form');
+        var registerForm = document.getElementById('register-form');
+        var loginRadio = document.getElementById('login-radio');
+        if (loginRadio.checked) {
+            loginForm.style.display = 'block';
+            registerForm.style.display = 'none';
+        } else {
+            loginForm.style.display = 'none';
+            registerForm.style.display = 'block';
+        }
+    }
+</script>
+{% endblock %}

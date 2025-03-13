@@ -23,6 +23,7 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('abcpHome.urls')),
+    path('accounts/', include('django.contrib.auth.urls')), # Include built-in authentication URLs
 ]
 
 if settings.DEBUG:

@@ -2,6 +2,7 @@
 
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from .models import UserProfile
 
 class CombinedForm(forms.Form):
     login_username = forms.CharField(label='Username', max_length=100, required=False)
@@ -28,4 +29,10 @@ class CombinedForm(forms.Form):
             return cleaned_data
 
         raise forms.ValidationError("Please fill out either the login or registration fields.")
+
+
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ['profile_pic', 'bio']
 

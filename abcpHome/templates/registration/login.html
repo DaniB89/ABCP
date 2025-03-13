@@ -1,0 +1,60 @@
+<!-- abcpHome/templates/registration/login.html -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Login{% endblock title %}
+
+{% block extra_styles %}
+<style>
+    body {
+        background: #f4f4f4;
+        color: #333;
+    }
+    .login-container {
+        width: 100%;
+        max-width: 400px;
+        margin: 50px auto;
+        padding: 20px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .login-container h1 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .login-container form {
+        display: flex;
+        flex-direction: column;
+    }
+    .login-container form input {
+        margin-bottom: 10px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+    .login-container form button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+    .login-container form button:hover {
+        background-color: #0056b3;
+    }
+</style>
+{% endblock extra_styles %}
+
+{% block content %}
+<div class="login-container">
+    <h1>Login</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Login</button>
+    </form>
+</div>
+{% endblock content %}
